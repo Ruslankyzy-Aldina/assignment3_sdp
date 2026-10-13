@@ -31,5 +31,9 @@ public class Main {
         System.out.println("\n5. Unavailable Telegram with SMS fallback");
         Notification withFallback = new UrgentNotification(new TelegramMessageSender(false), sms);
         withFallback.send("+77000000001", "Please check your schedule.");
+
+        System.out.println("\n6. Marketing notification via Push");
+        Notification marketing = new MarketingNotification(new PushNotificationSender());
+        marketing.send("student-device-token", "Get 20% off your next course.");
     }
 }
