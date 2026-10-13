@@ -4,7 +4,7 @@ A Java demonstration of the Bridge design pattern. Notification behavior and mes
 
 ## Requirements
 
-- Java 25 (the Maven project is configured for the JDK version used to build it)
+- Java 17 or later
 - Maven 3.9 or later
 
 ## Run
@@ -37,75 +37,6 @@ All providers are simulations. They print a representation of the delivery and r
 - **Implementor:** the `MessageSender` interface.
 - **Concrete implementors:** `TelegramMessageSender`, `EmailMessageSender`, `SmsMessageSender`, `KafkaEventSender`, and `PushNotificationSender`.
 - **Bridge relationship:** `Notification` has a `MessageSender` and delegates delivery through that interface. `setSender` can replace the provider while the notification object remains the same.
-
-### Class diagram
-
-```mermaid
-classDiagram
-    class Notification {
-        <<Abstraction>>
-        #MessageSender sender
-        +setSender(MessageSender)
-        +send(String recipient, String message)*
-    }
-
-    class UrgentNotification {
-        <<Refined Abstraction>>
-        -MessageSender fallbackSender
-        +send(String recipient, String message)
-    }
-    class EncryptedNotification {
-        <<Refined Abstraction>>
-        +send(String recipient, String message)
-    }
-    class ScheduledBatchNotification {
-        <<Refined Abstraction>>
-        -List~String~ recipients
-        +send(String recipient, String message)
-        +sendBatch(String message)
-    }
-    class MarketingNotification {
-        <<Refined Abstraction>>
-        +send(String recipient, String message)
-    }
-
-    class MessageSender {
-        <<Implementor interface>>
-        +sendMessage(String recipient, String title, String body) boolean
-        +isAvailable() boolean
-        +getChannelName() String
-    }
-
-    class TelegramMessageSender {
-        <<Concrete Implementor>>
-    }
-    class EmailMessageSender {
-        <<Concrete Implementor>>
-    }
-    class SmsMessageSender {
-        <<Concrete Implementor>>
-    }
-    class KafkaEventSender {
-        <<Concrete Implementor>>
-    }
-    class PushNotificationSender {
-        <<Concrete Implementor>>
-    }
-
-    Notification <|-- UrgentNotification
-    Notification <|-- EncryptedNotification
-    Notification <|-- ScheduledBatchNotification
-    Notification <|-- MarketingNotification
-    Notification o--> MessageSender : has-a / Bridge
-    UrgentNotification --> MessageSender : fallback
-    MessageSender <|.. TelegramMessageSender
-    MessageSender <|.. EmailMessageSender
-    MessageSender <|.. SmsMessageSender
-    MessageSender <|.. KafkaEventSender
-    MessageSender <|.. PushNotificationSender
-```
-
-An editable PlantUML version is available in [`docs/class-diagram.puml`](docs/class-diagram.puml).
 
 ## Design questions
 
